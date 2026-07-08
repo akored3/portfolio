@@ -9,6 +9,9 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@fontsource-variable/mona-sans": "^5.2.8",
+    "@fontsource-variable/syne": "^5.2.7",
+    "motion": "^12.42.2",
     "next": "16.2.10",
     "react": "19.2.4",
     "react-dom": "19.2.4"
