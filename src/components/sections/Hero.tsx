@@ -17,7 +17,7 @@ const fadeUp = {
 };
 
 export default function Hero() {
-  const avatarTint = useImageTint("/avatar_ready_to_work.png");
+  const avatarTint = useImageTint("/avatar_ready.png");
 
   return (
     <section
@@ -116,7 +116,7 @@ export default function Hero() {
                 className="size-full rounded-full border-4 border-muted object-cover grayscale transition-opacity duration-300 group-hover:opacity-0 group-focus-within:opacity-0 pointer-coarse:opacity-0"
               />
               <Image
-                src="/avatar_ready_to_work.png"
+                src="/avatar_ready.png"
                 alt=""
                 aria-hidden
                 width={140}
