@@ -8,7 +8,7 @@ export default function Work() {
         My Projects
       </h2>
       <p className="mt-6 max-w-2xl text-foreground/80">
-        Work section placeholder — project cards with screenshots, live/GitHub
+        Work section placeholder: project cards with screenshots, live/GitHub
         links, and tech tags go here.
       </p>
     </section>

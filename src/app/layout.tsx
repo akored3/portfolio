@@ -19,7 +19,7 @@ const monaSans = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Jide-Akinwale Akinbolaji — Frontend Engineer",
+  title: "Jide-Akinwale Akinbolaji | Frontend Engineer",
   description:
     "Portfolio of Jide-Akinwale Akinbolaji, a freelance frontend engineer building fast, high-converting websites and web apps. Open to work.",
 };

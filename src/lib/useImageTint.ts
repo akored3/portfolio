@@ -50,7 +50,7 @@ export function useImageTint(src: string, fallback = "33 37 49") {
           );
         }
       } catch {
-        /* canvas blocked (shouldn't happen for same-origin) — keep fallback */
+        /* canvas blocked (shouldn't happen for same-origin); keep fallback */
       }
     };
     return () => {

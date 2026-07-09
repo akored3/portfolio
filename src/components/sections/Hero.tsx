@@ -17,7 +17,7 @@ const fadeUp = {
 };
 
 export default function Hero() {
-  const avatarTint = useImageTint("/avatar.png");
+  const avatarTint = useImageTint("/avatar_ready_to_work.png");
 
   return (
     <section
@@ -98,21 +98,33 @@ export default function Hero() {
             href={site.whatsapp}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Open to work — DM Jide on WhatsApp"
+            aria-label="Open to work. DM Jide on WhatsApp"
             aria-describedby="avatar-tooltip"
             className="relative block rounded-full"
             whileHover={{ scale: 1.06, rotate: -3 }}
             whileTap={{ scale: 0.95 }}
             transition={{ type: "spring", stiffness: 260, damping: 18 }}
           >
-            <Image
-              src="/avatar.png"
-              alt={`Cartoon avatar of ${site.name}`}
-              width={140}
-              height={140}
-              priority
-              className="size-24 rounded-full border-4 border-muted object-cover grayscale transition-[filter] duration-300 group-hover:grayscale-0 group-focus-within:grayscale-0 pointer-coarse:grayscale-0 sm:size-32 md:size-36"
-            />
+            {/* Resting: greyscale base avatar. On hover, focus, or touch (no hover) it crossfades to the full-colour ready-to-work variant. */}
+            <span className="relative block size-24 sm:size-32 md:size-36">
+              <Image
+                src="/avatar.png"
+                alt={`Cartoon avatar of ${site.name}`}
+                width={140}
+                height={140}
+                priority
+                className="size-full rounded-full border-4 border-muted object-cover grayscale transition-opacity duration-300 group-hover:opacity-0 group-focus-within:opacity-0 pointer-coarse:opacity-0"
+              />
+              <Image
+                src="/avatar_ready_to_work.png"
+                alt=""
+                aria-hidden
+                width={140}
+                height={140}
+                priority
+                className="absolute inset-0 size-full rounded-full border-4 border-muted object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100 pointer-coarse:opacity-100"
+              />
+            </span>
           </motion.a>
           {/* Sibling of the rotating link so the card stays straight while the avatar tilts */}
           <span
@@ -134,7 +146,7 @@ export default function Hero() {
               Open to work
             </span>
             <span className="mt-1 block text-[13px] leading-snug text-white/75">
-              DM me on WhatsApp — I reply fast.
+              DM me on WhatsApp. I reply fast.
             </span>
           </span>
           <span className="mt-4 hidden items-center justify-center gap-1.5 pointer-coarse:flex">

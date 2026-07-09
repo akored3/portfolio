@@ -8,7 +8,7 @@ export default function Contact() {
         Let&apos;s Talk
       </h2>
       <p className="mt-6 max-w-xl text-center text-foreground/80">
-        Contact section placeholder — email, booking link, and social links go
+        Contact section placeholder: email, booking link, and social links go
         here.
       </p>
     </section>
