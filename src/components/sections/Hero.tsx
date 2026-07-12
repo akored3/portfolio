@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { motion } from "motion/react";
 import { site } from "@/lib/site";
-import { useImageTint } from "@/lib/useImageTint";
 import Magnetic from "@/components/ui/Magnetic";
 import RollingText from "@/components/ui/RollingText";
 
@@ -17,8 +16,6 @@ const fadeUp = {
 };
 
 export default function Hero() {
-  const avatarTint = useImageTint("/avatar_ready.png");
-
   return (
     <section
       id="home"
@@ -26,7 +23,7 @@ export default function Hero() {
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(123,104,217,0.15),transparent_60%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(0,229,133,0.12),transparent_60%)]"
       />
 
       <motion.header
@@ -78,7 +75,7 @@ export default function Hero() {
 
       <div className="relative z-10 flex flex-col items-center">
         <motion.h1
-          className="font-display text-center text-[clamp(2.75rem,11vw,8.5rem)] font-extrabold leading-[0.95] tracking-tight text-accent"
+          className="font-display text-center text-[clamp(2.75rem,11vw,8.5rem)] font-black leading-[0.95] tracking-tighter text-accent"
           initial="hidden"
           animate="visible"
           custom={0.25}
@@ -105,24 +102,24 @@ export default function Hero() {
             whileTap={{ scale: 0.95 }}
             transition={{ type: "spring", stiffness: 260, damping: 18 }}
           >
-            {/* Resting: greyscale base avatar. On hover, focus, or touch (no hover) it crossfades to the full-colour ready-to-work variant. */}
+            {/* Jide's two original images: greyscale avatar at rest, crossfading to his coloured ready-to-work avatar (grin, dollar-sign shades) on hover, focus, or touch. Both files are his own assets; never edit, regenerate, or re-encode them. */}
             <span className="relative block size-24 sm:size-32 md:size-36">
               <Image
-                src="/avatar.png"
+                src="/new_avatar.png"
                 alt={`Cartoon avatar of ${site.name}`}
                 width={140}
                 height={140}
                 priority
-                className="size-full rounded-full border-4 border-muted object-cover grayscale transition-opacity duration-300 group-hover:opacity-0 group-focus-within:opacity-0 pointer-coarse:opacity-0"
+                className="size-full rounded-full border-4 border-muted object-cover grayscale"
               />
               <Image
-                src="/avatar_ready.png"
+                src="/newavatar_ready.png"
                 alt=""
                 aria-hidden
                 width={140}
                 height={140}
                 priority
-                className="absolute inset-0 size-full rounded-full border-4 border-muted object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100 pointer-coarse:opacity-100"
+                className="absolute inset-0 size-full rounded-full border-4 border-muted object-cover opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100 group-focus-within:opacity-100 pointer-coarse:opacity-100"
               />
             </span>
           </motion.a>
@@ -130,18 +127,16 @@ export default function Hero() {
           <span
             id="avatar-tooltip"
             role="tooltip"
-            style={{ backgroundColor: `rgb(${avatarTint} / 0.78)` }}
-            className="pointer-events-none absolute bottom-full left-1/2 mb-3 w-max max-w-[260px] origin-bottom -translate-x-1/2 translate-y-2 scale-90 rounded-2xl border border-white/20 px-5 py-4 text-left text-white opacity-0 shadow-[0_12px_40px_rgba(14,16,22,0.35)] backdrop-blur-md transition-all duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:duration-300 group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100 group-hover:delay-75 group-focus-within:translate-y-0 group-focus-within:scale-100 group-focus-within:opacity-100"
+            className="pointer-events-none absolute bottom-full left-1/2 mb-3 w-max max-w-[260px] origin-bottom -translate-x-1/2 translate-y-2 scale-90 rounded-2xl border border-white/20 bg-muted/80 px-5 py-4 text-left text-white opacity-0 shadow-[0_12px_40px_rgba(14,16,22,0.35)] backdrop-blur-md transition-all duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:duration-300 group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100 group-hover:delay-75 group-focus-within:translate-y-0 group-focus-within:scale-100 group-focus-within:opacity-100"
           >
             <span
               aria-hidden
-              style={{ backgroundColor: `rgb(${avatarTint} / 0.78)` }}
-              className="absolute -bottom-1.5 left-1/2 size-3 -translate-x-1/2 rotate-45 border-b border-r border-white/20 backdrop-blur-md"
+              className="absolute -bottom-1.5 left-1/2 size-3 -translate-x-1/2 rotate-45 border-b border-r border-white/20 bg-muted/80 backdrop-blur-md"
             />
             <span className="flex items-center gap-2 text-sm font-bold">
               <span aria-hidden className="relative flex size-2">
-                <span className="absolute inline-flex size-full animate-ping rounded-full bg-[#25D366] opacity-75" />
-                <span className="relative inline-flex size-2 rounded-full bg-[#25D366]" />
+                <span className="absolute inline-flex size-full animate-ping rounded-full bg-whatsapp opacity-75" />
+                <span className="relative inline-flex size-2 rounded-full bg-whatsapp" />
               </span>
               Open to work
             </span>
@@ -150,7 +145,7 @@ export default function Hero() {
             </span>
           </span>
           <span className="mt-4 hidden items-center justify-center gap-1.5 pointer-coarse:flex">
-            <span aria-hidden className="size-2 rounded-full bg-[#25D366]" />
+            <span aria-hidden className="size-2 rounded-full bg-whatsapp" />
             <span className="text-xs font-semibold tracking-wide">
               open to work
             </span>
@@ -165,14 +160,15 @@ export default function Hero() {
         custom={0.8}
         variants={fadeUp}
       >
-        <p className="max-w-xs text-sm leading-relaxed text-foreground/90 md:text-base">
+        <p className="mx-auto max-w-xs text-center text-base leading-relaxed text-foreground/90 sm:mx-0 sm:text-left md:text-lg">
           I&apos;m a freelance{" "}
           <span className="font-bold text-accent">{site.role}</span>, currently
           open to work.
         </p>
-        <p className="max-w-xs text-sm leading-relaxed text-foreground/90 sm:text-right md:text-base">
-          Focused on interfaces and experiences, working with clients
-          worldwide.
+        <p className="hidden max-w-xs text-base leading-relaxed text-foreground/90 sm:block sm:text-right md:text-lg">
+          Crafting interfaces and experiences
+          <br />
+          for clients around the world.
         </p>
       </motion.div>
     </section>

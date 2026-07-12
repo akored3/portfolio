@@ -6,6 +6,7 @@
   --foreground: #e4ded7;
   --accent: #ffffff;
   --muted: #212531;
+  --whatsapp: #25d366;
 }
 
 @theme inline {
@@ -13,6 +14,7 @@
   --color-foreground: var(--foreground);
   --color-accent: var(--accent);
   --color-muted: var(--muted);
+  --color-whatsapp: var(--whatsapp);
   --font-sans: var(--font-syne);
   --font-display: var(--font-mona-sans);
 }
@@ -21,6 +23,72 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-syne), sans-serif;
+}
+
+/* Marquee track: the track holds two identical copies of its content and
+   slides by half its own width, so the loop is seamless. Reduced motion is
+   handled by the global media query below (animation collapses to its end
+   state, leaving a static strip). */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Watchlist spotlight: while a poster is hovered, the rest of the strip dims
+   and desaturates; the hovered card lifts. Keyed on :has() so hovering the
+   gaps between cards changes nothing; touch devices never match :hover and
+   keep the plain scrolling strip. */
+.watch-strip:has(.watch-card:hover) .watch-card:not(:hover) {
+  opacity: 0.4;
+  filter: saturate(0.55) brightness(0.9);
+}
+
+.watch-card {
+  transition:
+    opacity 300ms ease-out,
+    filter 300ms ease-out,
+    transform 300ms ease-out;
+}
+
+.watch-card:hover {
+  transform: translateY(-6px) scale(1.03);
+}
+
+/* Project-card border beam: a gradient streak orbiting the card edge. The
+   track masks everything except the 1px border ring (padding-box/border-box
+   mask intersect), and the beam square rides that ring via offset-path.
+   Reduced motion collapses the animation via the global media query below,
+   leaving a faint static glint in the top-left corner. */
+.beam-track {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid transparent;
+  mask-clip: padding-box, border-box;
+  mask-composite: intersect;
+  mask-image: linear-gradient(transparent, transparent), linear-gradient(#000, #000);
+}
+
+.beam {
+  position: absolute;
+  aspect-ratio: 1;
+  width: 120px;
+  background: linear-gradient(
+    to left,
+    rgba(0, 229, 133, 0.95),
+    rgba(167, 243, 208, 0.8),
+    transparent
+  );
+  offset-path: rect(0px auto auto 0px round 120px);
+  animation: beam 7s linear infinite;
+}
+
+@keyframes beam {
+  to {
+    offset-distance: 100%;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
