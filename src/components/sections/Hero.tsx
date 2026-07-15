@@ -1,30 +1,52 @@
 "use client";
 
+import { useRef, type PointerEvent as ReactPointerEvent } from "react";
 import Image from "next/image";
-import { motion } from "motion/react";
+import { motion, useMotionValue, useReducedMotion, useSpring } from "motion/react";
 import { site } from "@/lib/site";
+import { fadeUp } from "@/lib/motion-variants";
 import Magnetic from "@/components/ui/Magnetic";
 import RollingText from "@/components/ui/RollingText";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (delay: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, delay, ease: [0.21, 0.47, 0.32, 0.98] as const },
-  }),
-};
-
 export default function Hero() {
+  const reduceMotion = useReducedMotion();
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Pointer parallax: the whole light field leans a few pixels toward the
+  // cursor on a soft spring. Deliberately capped at ~18px so it registers as
+  // depth, not as an object following the mouse.
+  const driftX = useMotionValue(0);
+  const driftY = useMotionValue(0);
+  const lampX = useSpring(driftX, { stiffness: 40, damping: 20 });
+  const lampY = useSpring(driftY, { stiffness: 40, damping: 20 });
+
+  const handlePointerMove = (e: ReactPointerEvent<HTMLElement>) => {
+    if (reduceMotion || e.pointerType === "touch") return;
+    const rect = sectionRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    driftX.set(((e.clientX - rect.left) / rect.width - 0.5) * 36);
+    driftY.set(((e.clientY - rect.top) / rect.height - 0.5) * 28);
+  };
+
   return (
     <section
       id="home"
+      ref={sectionRef}
+      onPointerMove={handlePointerMove}
+      onPointerLeave={() => {
+        driftX.set(0);
+        driftY.set(0);
+      }}
       className="relative flex min-h-svh w-full flex-col justify-between overflow-hidden px-6 py-8 sm:px-10 sm:py-10 lg:px-16"
     >
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(0,229,133,0.12),transparent_60%)]"
-      />
+      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,color-mix(in_srgb,var(--glow)_10%,transparent),transparent_60%)]" />
+        {/* Wrapper owns the parallax transform; the lamp inside owns the CSS
+            breathe keyframes. Same property on one element would clash. */}
+        <motion.div className="absolute inset-0" style={{ x: lampX, y: lampY }}>
+          <div className="hero-ambient" />
+        </motion.div>
+      </div>
 
       <motion.header
         className="relative z-10 flex w-full items-center justify-between"
@@ -50,18 +72,23 @@ export default function Hero() {
           </a>
         </Magnetic>
         <Magnetic strength={0.25}>
-          <a
-            href={site.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-describedby="github-tooltip"
-            className="group relative block text-sm font-semibold md:text-base"
-          >
-            <RollingText text="GitHub" />
+          {/* Tooltip is a sibling of the anchor (same pattern as the avatar
+              tooltip below) so the link's accessible name stays "GitHub"
+              instead of swallowing the tooltip text. */}
+          <span className="group relative block">
+            <a
+              href={site.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-describedby="github-tooltip"
+              className="block text-sm font-semibold md:text-base"
+            >
+              <RollingText text="GitHub" />
+            </a>
             <span
               id="github-tooltip"
               role="tooltip"
-              className="pointer-events-none absolute right-0 top-full mt-3 w-max origin-top-right -translate-y-1 scale-95 rounded-lg border border-white/15 bg-muted/80 px-3 py-1.5 text-xs font-semibold text-white/90 opacity-0 shadow-[0_8px_24px_rgba(14,16,22,0.4)] backdrop-blur-md transition-all duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100 group-hover:delay-75 group-hover:duration-300 group-focus-visible:translate-y-0 group-focus-visible:scale-100 group-focus-visible:opacity-100"
+              className="pointer-events-none absolute right-0 top-full mt-3 w-max origin-top-right -translate-y-1 scale-95 rounded-lg border border-white/15 bg-muted/80 px-3 py-1.5 text-xs font-semibold text-white/90 opacity-0 shadow-[0_8px_24px_rgba(14,16,22,0.4)] backdrop-blur-md transition-all duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100 group-hover:delay-75 group-hover:duration-300 group-focus-within:translate-y-0 group-focus-within:scale-100 group-focus-within:opacity-100"
             >
               <span
                 aria-hidden
@@ -69,7 +96,7 @@ export default function Hero() {
               />
               View profile
             </span>
-          </a>
+          </span>
         </Magnetic>
       </motion.header>
 
@@ -81,7 +108,9 @@ export default function Hero() {
           custom={0.25}
           variants={fadeUp}
         >
-          {site.heroFirstLine}
+          {/* The explicit space keeps the accessible name reading as two
+              words; it collapses visually at the line break. */}
+          {site.heroFirstLine}{" "}
           <br />
           {site.heroSecondLine}
         </motion.h1>
@@ -104,6 +133,10 @@ export default function Hero() {
           >
             {/* Jide's two original images: greyscale avatar at rest, crossfading to his coloured ready-to-work avatar (grin, dollar-sign shades) on hover, focus, or touch. Both files are his own assets; never edit, regenerate, or re-encode them. */}
             <span className="relative block size-24 sm:size-32 md:size-36">
+              {/* Open-to-work beacon: rings in the site's glow green ripple
+                  out from the avatar */}
+              <span aria-hidden className="beacon-ring" />
+              <span aria-hidden className="beacon-ring beacon-ring-delayed" />
               <Image
                 src="/new_avatar.png"
                 alt={`Cartoon avatar of ${site.name}`}
@@ -166,7 +199,7 @@ export default function Hero() {
           open to work.
         </p>
         <p className="hidden max-w-xs text-base leading-relaxed text-foreground/90 sm:block sm:text-right md:text-lg">
-          Crafting interfaces and experiences
+          Building sharp, fast websites{" "}
           <br />
           for clients around the world.
         </p>

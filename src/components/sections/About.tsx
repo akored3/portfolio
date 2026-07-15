@@ -3,17 +3,9 @@
 import Image from "next/image";
 import { motion } from "motion/react";
 import { site } from "@/lib/site";
+import { fadeUp } from "@/lib/motion-variants";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import Marquee from "@/components/ui/Marquee";
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (delay: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, delay, ease: [0.21, 0.47, 0.32, 0.98] as const },
-  }),
-};
 
 export default function About() {
   return (
@@ -29,44 +21,42 @@ export default function About() {
           <ScrollReveal text={site.about.headline} />
         </h2>
 
-        <div className="flex flex-col lg:flex-row lg:justify-between lg:gap-20">
-          {/* Bio */}
-          <div className="mb-10 flex flex-col gap-4 text-lg font-medium leading-relaxed tracking-wide text-foreground md:mb-16 md:gap-6 md:text-xl lg:mb-0 lg:max-w-[62%] lg:text-2xl">
-            {site.about.bio.map((paragraph, i) => (
-              <motion.p
-                key={i}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-60px" }}
-                custom={0.1 + i * 0.08}
-                variants={fadeUp}
-              >
-                {paragraph}
-              </motion.p>
-            ))}
-          </div>
+        {/* Bio, then tools as a 3-up row beneath it. The reference parks the
+            tools in a right-hand rail; stacking is deliberately not that. */}
+        <div className="flex max-w-4xl flex-col gap-4 text-lg font-medium leading-relaxed tracking-wide text-foreground md:gap-6 md:text-xl lg:text-2xl">
+          {site.about.bio.map((paragraph, i) => (
+            <motion.p
+              key={i}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-60px" }}
+              custom={0.1 + i * 0.08}
+              variants={fadeUp}
+            >
+              {paragraph}
+            </motion.p>
+          ))}
+        </div>
 
-          {/* Tools */}
-          <div className="flex flex-col gap-6 md:gap-8 lg:w-[30%] lg:shrink-0 lg:gap-6">
-            {site.about.tools.map((group, i) => (
-              <motion.div
-                key={group.title}
-                className="flex flex-col gap-2 md:gap-3"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-60px" }}
-                custom={0.15 + i * 0.08}
-                variants={fadeUp}
-              >
-                <h3 className="text-2xl font-bold text-foreground md:text-3xl lg:text-xl">
-                  {group.title}
-                </h3>
-                <p className="text-lg leading-relaxed tracking-wide text-foreground/80 md:text-base lg:text-lg">
-                  {group.items}
-                </p>
-              </motion.div>
-            ))}
-          </div>
+        <div className="mt-12 grid gap-8 sm:grid-cols-3 md:mt-16">
+          {site.about.tools.map((group, i) => (
+            <motion.div
+              key={group.title}
+              className="flex flex-col gap-2 md:gap-3"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-60px" }}
+              custom={0.15 + i * 0.08}
+              variants={fadeUp}
+            >
+              <h3 className="text-xl font-bold text-foreground md:text-2xl">
+                {group.title}
+              </h3>
+              <p className="text-base leading-relaxed tracking-wide text-foreground/80 lg:text-lg">
+                {group.items}
+              </p>
+            </motion.div>
+          ))}
         </div>
       </div>
 

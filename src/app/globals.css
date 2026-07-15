@@ -1,12 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  /* Dark, typography-led palette from the reference design */
-  --background: #0e1016;
-  --foreground: #e4ded7;
+  /* Dark, typography-led palette. Tinted a step toward the glow green so it
+     reads as ours, not the reference's blue-black. */
+  --background: #0d1311;
+  --foreground: #e6e0d4;
   --accent: #ffffff;
-  --muted: #212531;
+  --muted: #1f2924;
   --whatsapp: #25d366;
+  --glow: #00e585; /* green glow accent for decorative light effects */
 }
 
 @theme inline {
@@ -15,6 +17,7 @@
   --color-accent: var(--accent);
   --color-muted: var(--muted);
   --color-whatsapp: var(--whatsapp);
+  --color-glow: var(--glow);
   --font-sans: var(--font-syne);
   --font-display: var(--font-mona-sans);
 }
@@ -53,6 +56,74 @@ body {
 
 .watch-card:hover {
   transform: translateY(-6px) scale(1.03);
+}
+
+/* Hero "open to work" beacon (Hero.tsx). Three quiet layers: a dim ambient
+   lamp breathing behind the headline; thin rings in the site's glow green
+   rippling out from the avatar every few seconds; and a pointer parallax
+   where motion leans the lamp a few pixels toward the cursor (only the lamp;
+   the top gradient and rings stay put, and the transform sits on a wrapper
+   so it never fights the lamp's own keyframes). Everything is static paint
+   animating only transform and opacity, so it all runs on the compositor.
+   The independent translate property centres the lamp without touching
+   transform. Touch devices get lamp + rings with no parallax; reduced motion
+   freezes the lamp to a static glow and parks the rings at opacity 0 via the
+   global query below. */
+.hero-ambient {
+  position: absolute;
+  top: 34%;
+  left: 50%;
+  width: min(75vw, 880px);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  mix-blend-mode: screen;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--glow) 10%, transparent) 0%,
+    rgba(45, 212, 191, 0.045) 45%,
+    transparent 70%
+  );
+  animation: ambient-drift 18s ease-in-out infinite;
+}
+
+@keyframes ambient-drift {
+  0%,
+  100% {
+    transform: translate3d(-3%, -2%, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(3%, 2%, 0) scale(1.07);
+  }
+}
+
+.beacon-ring {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--glow) 50%, transparent);
+  opacity: 0;
+  animation: beacon 7s cubic-bezier(0.2, 0.55, 0.35, 1) infinite;
+}
+
+.beacon-ring-delayed {
+  animation-delay: 3.5s;
+}
+
+@keyframes beacon {
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.45;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
 }
 
 /* Project-card border beam: a gradient streak orbiting the card edge. The

@@ -3,17 +3,10 @@
 import Image from "next/image";
 import { motion } from "motion/react";
 import { site } from "@/lib/site";
+import { fadeUp } from "@/lib/motion-variants";
 import ScrollReveal from "@/components/ui/ScrollReveal";
-import Magnetic from "@/components/ui/Magnetic";
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (delay: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, delay, ease: [0.21, 0.47, 0.32, 0.98] as const },
-  }),
-};
+import CircleLink from "@/components/ui/CircleLink";
+import RollingText from "@/components/ui/RollingText";
 
 type Project = (typeof site.work.projects)[number];
 
@@ -37,26 +30,6 @@ function ArrowIcon() {
     >
       <path d="M7 17 17 7M7 7h10v10" />
     </svg>
-  );
-}
-
-function CardLink({
-  href,
-  label,
-  children,
-}: Readonly<{ href: string; label: string; children: React.ReactNode }>) {
-  return (
-    <Magnetic strength={0.2}>
-      <a
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={label}
-        className="flex size-11 items-center justify-center rounded-full border-2 border-foreground/80 text-foreground transition-colors duration-300 hover:bg-foreground hover:text-background focus-visible:bg-foreground focus-visible:text-background md:size-12"
-      >
-        {children}
-      </a>
-    </Magnetic>
   );
 }
 
@@ -152,14 +125,14 @@ function ProjectCard({
           }`}
         >
           {project.github && (
-            <CardLink href={project.github} label={`Open the ${project.title} GitHub repository`}>
+            <CircleLink href={project.github} label={`Open the ${project.title} GitHub repository`}>
               <GitHubIcon />
-            </CardLink>
+            </CircleLink>
           )}
           {project.live && (
-            <CardLink href={project.live} label={`Open the live ${project.title} website`}>
+            <CircleLink href={project.live} label={`Open the live ${project.title} website`}>
               <ArrowIcon />
-            </CardLink>
+            </CircleLink>
           )}
         </div>
       )}
@@ -175,11 +148,11 @@ function ProjectCard({
         <p className="mt-4 max-w-[460px] text-base font-semibold leading-relaxed text-foreground/70">
           {project.description}
         </p>
-        <ul aria-label="Built with" className="mt-5 flex flex-wrap gap-x-4 gap-y-1">
+        <ul aria-label="Built with" className="mt-5 flex flex-wrap gap-2">
           {project.tags.map((tag) => (
             <li
               key={tag}
-              className="text-sm font-bold uppercase tracking-wide text-accent md:text-base"
+              className="rounded-full border border-foreground/25 px-3 py-1 text-xs font-bold uppercase tracking-wide text-accent md:text-sm"
             >
               {tag}
             </li>
@@ -200,7 +173,7 @@ export default function Work() {
           <ScrollReveal text={site.work.headline} />
         </h2>
         <motion.p
-          className="mt-6 w-[90%] max-w-[550px] text-center text-sm font-semibold uppercase tracking-wide text-foreground md:text-base"
+          className="mt-6 w-[90%] max-w-xl text-center text-sm font-semibold uppercase tracking-wide text-foreground md:text-base"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-60px" }}
@@ -214,6 +187,33 @@ export default function Work() {
           {site.work.projects.map((project, i) => (
             <ProjectCard key={project.title} project={project} index={i} />
           ))}
+
+          {/* Closing beat: one quiet card ending the section instead of it
+              just stopping after the last project. The whole card is the
+              anchor, so the arrow circle is a styled span (CircleLink is an
+              anchor itself and links can't nest); it borrows CircleLink's
+              border-and-invert language via group-hover. */}
+          <motion.a
+            href={site.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex w-full flex-wrap items-center justify-center gap-x-5 gap-y-4 rounded-3xl bg-muted px-8 py-10 md:py-12"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-60px" }}
+            custom={0.1}
+            variants={fadeUp}
+          >
+            <span className="text-lg font-bold text-foreground md:text-xl">
+              <RollingText text="More builds on GitHub" />
+            </span>
+            <span
+              aria-hidden
+              className="flex size-11 items-center justify-center rounded-full border-2 border-foreground/80 text-foreground transition-colors duration-300 group-hover:bg-foreground group-hover:text-background group-focus-visible:bg-foreground group-focus-visible:text-background md:size-12"
+            >
+              <ArrowIcon />
+            </span>
+          </motion.a>
         </div>
       </div>
     </section>

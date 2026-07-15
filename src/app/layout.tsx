@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import MotionProvider from "@/components/MotionProvider";
+import { site } from "@/lib/site";
 import "./globals.css";
 
 // Self-hosted (Google Fonts downloads fail on this machine's network)
@@ -19,9 +20,23 @@ const monaSans = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Jide-Akinwale Akinbolaji | Frontend Engineer",
-  description:
-    "Portfolio of Jide-Akinwale Akinbolaji, a freelance frontend engineer building fast, high-converting websites and web apps. Open to work.",
+  // metadataBase is deliberately omitted: on Vercel this Next version falls
+  // back to VERCEL_PROJECT_PRODUCTION_URL (see next/dist/lib/metadata/
+  // resolvers/resolve-url.js), so OG URLs resolve without hardcoding a
+  // domain. Set it explicitly here once a custom domain exists.
+  title: site.meta.title,
+  description: site.meta.description,
+  openGraph: {
+    title: site.meta.title,
+    description: site.meta.description,
+    siteName: site.name,
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: site.meta.title,
+    description: site.meta.description,
+  },
 };
 
 export default function RootLayout({

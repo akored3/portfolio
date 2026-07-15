@@ -5,8 +5,13 @@ export const site = {
   role: "Frontend Engineer",
   email: "jideakinbolaji@gmail.com",
   github: "https://github.com/akored3",
-  // TODO: replace with the real number in international format, e.g. https://wa.me/2348012345678
-  whatsapp: "https://wa.me/0000000000",
+  whatsapp: "https://wa.me/2349090498359",
+  // Shared by <head> metadata and the generated OG card.
+  meta: {
+    title: "Jide-Akinwale Akinbolaji | Frontend Engineer",
+    description:
+      "Portfolio of Jide-Akinwale Akinbolaji, a freelance frontend engineer building fast, high-converting websites and web apps. Open to work.",
+  },
   about: {
     headline: "I BUILD WEBSITES, SHARPEN BRANDS, SHIP FAST.",
     bio: [
@@ -16,7 +21,7 @@ export const site = {
     ],
     tools: [
       {
-        title: "Frontend Tools",
+        title: "Core Stack",
         items:
           "JavaScript (ES6+), TypeScript, React, Next.js, HTML5, CSS3, Git/GitHub.",
       },
@@ -25,39 +30,86 @@ export const site = {
         items: "Tailwind CSS, Motion (Framer Motion), Figma to code.",
       },
       {
-        title: "Backend Tools",
+        title: "Server & Data",
         items: "Node.js, REST APIs, Supabase, Firebase.",
       },
     ],
     watchCaption:
-      "A few movies and series I can recommend if you're looking for something to watch :)",
+      "When I log off, one of these is probably playing. Borrow a pick if you need one.",
     // link is optional (IMDb, trailer, wherever).
     watchlist: [
-      { title: "Death Proof", image: "/watch/deathproof.webp", link: "" },
-      { title: "Kill Bill", image: "/watch/killbill.jpg", link: "" },
-      { title: "Avatar", image: "/watch/avatar.webp", link: "" },
-      { title: "Mad God", image: "/watch/madgod.jpg", link: "" },
+      {
+        title: "Death Proof",
+        image: "/watch/deathproof.webp",
+        link: "https://www.imdb.com/title/tt1028528/",
+      },
+      {
+        title: "Kill Bill",
+        image: "/watch/killbill.jpg",
+        link: "https://www.imdb.com/title/tt0266697/",
+      },
+      {
+        title: "Avatar",
+        image: "/watch/avatar.webp",
+        link: "https://www.imdb.com/title/tt0499549/",
+      },
+      {
+        title: "Mad God",
+        image: "/watch/madgod.jpg",
+        link: "https://www.imdb.com/title/tt15090124/",
+      },
       // Leave image empty to render the code-drawn typographic poster card
       // instead of real art.
-      { title: "Heat", image: "/watch/heat.webp", link: "" },
-      { title: "Isle of Dogs", image: "/watch/isleofdogs.jpg", link: "" },
-      { title: "Rick and Morty", image: "/watch/rickandmorty.jpg", link: "" },
-      { title: "Primal", image: "/watch/primal.jpg", link: "" },
-      { title: "Castlevania", image: "/watch/castlevania.jpg", link: "" },
+      {
+        title: "Heat",
+        image: "/watch/heat.webp",
+        link: "https://www.imdb.com/title/tt0113277/",
+      },
+      {
+        title: "Isle of Dogs",
+        image: "/watch/isleofdogs.jpg",
+        link: "https://www.imdb.com/title/tt5104604/",
+      },
+      {
+        title: "Rick and Morty",
+        image: "/watch/rickandmorty.jpg",
+        link: "https://www.imdb.com/title/tt2861424/",
+      },
+      {
+        title: "Primal",
+        image: "/watch/primal.jpg",
+        link: "https://www.imdb.com/title/tt10332508/",
+      },
+      {
+        title: "Castlevania",
+        image: "/watch/castlevania.jpg",
+        link: "https://www.imdb.com/title/tt6517102/",
+      },
       {
         title: "Love, Death & Robots",
         image: "/watch/lovedeathandrobot.jpg",
-        link: "",
+        link: "https://www.imdb.com/title/tt9561862/",
       },
       {
         title: "Cyberpunk: Edgerunners",
         image: "/watch/cyberpunk.webp",
-        link: "",
+        link: "https://www.imdb.com/title/tt12590266/",
       },
     ],
   },
+  contact: {
+    headline: "LET'S BUILD",
+    prompt:
+      "Have a project in mind, or a website that should be working harder for you?",
+    // Prefilled so a lead can hit send without composing anything.
+    emailSubject: "Let's work together",
+    emailBody: "Hi Jide, I've got a project I'd like to talk about.",
+  },
+  footer: {
+    note: "Need a website?",
+  },
   work: {
-    headline: "MY PROJECTS",
+    headline: "SELECTED WORK",
     subtitle:
       "A selection of builds for founders and growing brands. Fast to load, sharp to look at, easy to use.",
     // Leave image empty to render the code-drawn browser card; baked
@@ -86,3 +138,15 @@ export const site = {
     ],
   },
 };
+
+// Canonical origin for sitemap/robots, resolved from Vercel's production env
+// at build time (same source Next uses for its metadataBase fallback).
+// Replace with the custom domain when one exists.
+export const productionOrigin = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : "http://localhost:3000";
+
+// Prefilled mailto shared by the Contact CTA and the footer email button.
+export const emailHref = `mailto:${site.email}?subject=${encodeURIComponent(
+  site.contact.emailSubject,
+)}&body=${encodeURIComponent(site.contact.emailBody)}`;
