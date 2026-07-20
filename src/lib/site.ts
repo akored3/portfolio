@@ -1,11 +1,18 @@
 export const site = {
   heroFirstLine: "Jide-Akinwale",
-  heroSecondLine: "Akinbolaji",
+  heroSecondLine: "Akorede",
+  // Credibility ledger rendered at the bottom of the hero. Numeric values so
+  // the odometer can roll to them; "Builds shipped" borrows the Work
+  // section's vocabulary so the "+" is backed by "More builds on GitHub".
+  stats: [
+    { value: 4, suffix: "", label: "Years of experience" },
+    { value: 4, suffix: "+", label: "Builds shipped" },
+  ],
   name: "Jide-Akinwale Akinbolaji",
   role: "Frontend Engineer",
   email: "jideakinbolaji@gmail.com",
   github: "https://github.com/akored3",
-  whatsapp: "https://wa.me/2349090498359",
+  whatsapp: "https://wa.me/2347013598435",
   // Shared by <head> metadata and the generated OG card.
   meta: {
     title: "Jide-Akinwale Akinbolaji | Frontend Engineer",
@@ -134,6 +141,15 @@ export const site = {
         live: "https://lojus-healthy-bites.vercel.app",
         github: "https://github.com/akored3/lojus-healthy-bites",
         image: "/projects/lojus-healthy-bites.png",
+      },
+      {
+        title: "Brokelock",
+        description:
+          "A commitment savings vault on the Monad blockchain. Lock money toward a goal: withdraw free after the deadline, but quit early and the penalty goes straight to your accountability partner. No backend, no database. The smart contract is the app.",
+        tags: ["React", "viem", "Solidity", "Monad"],
+        live: "https://brokelock.vercel.app",
+        github: "https://github.com/akored3/brokelock",
+        image: "/projects/brokelock.png",
       },
     ],
   },

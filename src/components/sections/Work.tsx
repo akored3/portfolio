@@ -108,16 +108,6 @@ function ProjectCard({
         <span className="beam" style={{ animationDelay: `${index * -2.5}s` }} />
       </span>
 
-      {/* Oversized index numeral, opposite corner from the icon buttons. */}
-      <span
-        aria-hidden
-        className={`pointer-events-none absolute top-5 font-display text-7xl font-black leading-none text-white/[0.07] md:text-8xl ${
-          flip ? "left-6 lg:left-10" : "right-6 lg:right-10"
-        }`}
-      >
-        {String(index + 1).padStart(2, "0")}
-      </span>
-
       {(project.github || project.live) && (
         <div
           className={`z-20 flex gap-3 px-6 pt-6 sm:px-8 sm:pt-8 lg:absolute lg:top-8 lg:p-0 ${

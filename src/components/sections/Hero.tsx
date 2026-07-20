@@ -1,12 +1,13 @@
 "use client";
 
-import { useRef, type PointerEvent as ReactPointerEvent } from "react";
+import { Fragment, useRef, type PointerEvent as ReactPointerEvent } from "react";
 import Image from "next/image";
 import { motion, useMotionValue, useReducedMotion, useSpring } from "motion/react";
 import { site } from "@/lib/site";
 import { fadeUp } from "@/lib/motion-variants";
 import Magnetic from "@/components/ui/Magnetic";
 import RollingText from "@/components/ui/RollingText";
+import StatNumber from "@/components/ui/StatNumber";
 
 export default function Hero() {
   const reduceMotion = useReducedMotion();
@@ -177,28 +178,45 @@ export default function Hero() {
               DM me on WhatsApp. I reply fast.
             </span>
           </span>
-          <span className="mt-4 hidden items-center justify-center gap-1.5 pointer-coarse:flex">
-            <span aria-hidden className="size-2 rounded-full bg-whatsapp" />
-            <span className="text-xs font-semibold tracking-wide">
-              open to work
-            </span>
-          </span>
         </motion.div>
       </div>
 
+      {/* Bottom row: paragraph / stat ledger / paragraph. Flex column on
+          mobile, two-across at sm (the right paragraph waits for lg; at
+          tablet widths three columns collapse it into a word tower), and at
+          lg a 1fr_auto_1fr grid so the ledger sits on the hero's true
+          centerline, the same axis as the name and avatar. */}
       <motion.div
-        className="relative z-10 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between"
+        className="relative z-10 flex flex-col items-center gap-5 sm:flex-row sm:items-end sm:justify-between sm:gap-6 lg:grid lg:grid-cols-[1fr_auto_1fr]"
         initial="hidden"
         animate="visible"
         custom={0.8}
         variants={fadeUp}
       >
-        <p className="mx-auto max-w-xs text-center text-base leading-relaxed text-foreground/90 sm:mx-0 sm:text-left md:text-lg">
+        <p className="max-w-xs text-center text-base leading-relaxed text-foreground/90 sm:text-left md:text-lg">
           I&apos;m a freelance{" "}
           <span className="font-bold text-accent">{site.role}</span>, currently
           open to work.
         </p>
-        <p className="hidden max-w-xs text-base leading-relaxed text-foreground/90 sm:block sm:text-right md:text-lg">
+        {/* Credibility ledger: odometer numerals roll up once with the
+            entrance and land on today's reading; the plus stamps in after
+            its digit settles because the count is still going. */}
+        <div className="grid grid-cols-[auto_auto] items-end gap-x-3 gap-y-2.5 lg:justify-self-center">
+          {site.stats.map((stat, i) => (
+            <Fragment key={stat.label}>
+              <StatNumber
+                value={stat.value}
+                suffix={stat.suffix}
+                delay={1.15 + i * 0.15}
+                className="justify-self-end font-display text-[clamp(1.75rem,1.3rem+1.2vw,2.25rem)] font-black leading-none tracking-tight text-accent tabular-nums"
+              />
+              <span className="whitespace-nowrap pb-[0.2em] text-[11px] font-semibold uppercase tracking-[0.12em] text-foreground/60 md:text-xs">
+                {stat.label}
+              </span>
+            </Fragment>
+          ))}
+        </div>
+        <p className="hidden max-w-xs text-base leading-relaxed text-foreground/90 lg:block lg:justify-self-end lg:text-right md:text-lg">
           Building sharp, fast websites{" "}
           <br />
           for clients around the world.
