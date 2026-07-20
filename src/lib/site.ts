@@ -8,16 +8,16 @@ export const site = {
     { value: 4, suffix: "", label: "Years of experience" },
     { value: 4, suffix: "+", label: "Builds shipped" },
   ],
-  name: "Jide-Akinwale Akinbolaji",
+  name: "Jide-Akinwale Akorede",
   role: "Frontend Engineer",
   email: "jideakinbolaji@gmail.com",
   github: "https://github.com/akored3",
   whatsapp: "https://wa.me/2347013598435",
   // Shared by <head> metadata and the generated OG card.
   meta: {
-    title: "Jide-Akinwale Akinbolaji | Frontend Engineer",
+    title: "Jide-Akinwale Akorede | Frontend Engineer",
     description:
-      "Portfolio of Jide-Akinwale Akinbolaji, a freelance frontend engineer building fast, high-converting websites and web apps. Open to work.",
+      "Portfolio of Jide-Akinwale Akorede, a freelance frontend engineer building fast, high-converting websites and web apps. Open to work.",
   },
   about: {
     headline: "I BUILD WEBSITES, SHARPEN BRANDS, SHIP FAST.",
